@@ -12,6 +12,15 @@ const notifier = require('node-notifier')
 const devWebpackConfig = merge(baseWebpackConfig, {
     mode: 'development',  // 设置开发环境的mode
 
+    module:{
+        rules: [
+            {
+                test: /\.scss$/,
+                use: ['vue-style-loader', 'css-loader', 'sass-loader']
+            }
+        ]
+    },
+
     devServer: {
         clientLogLevel: 'warning',
         compress: true,  // 开启gzip压缩

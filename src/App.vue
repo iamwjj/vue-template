@@ -3,13 +3,13 @@
 </template>
 
 <script>
-    export default {
-        name: "app"
-    }
+export default {
+    name: "app"
+}
 </script>
 
 <style>
-    h1{
-      text-align: center;
-    }
+h1{
+    text-align: center;
+}
 </style>

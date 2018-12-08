@@ -24,6 +24,15 @@ module.exports = {
             }, {
                 test: /\.css$/,
                 use: ['vue-style-loader', 'css-loader']
+            }, {
+                test: /\.js$/,
+                use: {
+                    loader: "babel-loader",
+                    options: {
+                        cacheDirectory: true,
+                    }
+                },
+                include: [resolve('src'), resolve('test')]
             }
         ]
     },
