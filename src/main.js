@@ -1,20 +1,29 @@
 import Vue from 'vue'
-import App from './App'
+import Router from 'vue-router'
+import App from './App.vue'
+import Home from '@/components/Home.vue'
+import About from '@/components/About.vue'
+
+Vue.use(Router)
+
+const router = new Router({
+  routes: [
+    {
+      path: '/',
+      redirect: '/home'
+    },
+    {
+      path: '/home',
+      component: Home,
+    }, {
+      path: '/about',
+      component: About
+    }
+  ]
+})
 
 new Vue({
     el: '#app',
+    router,
     render: h => h(App)
 })
-
-let fn = () => {
-    let arr = [1,2,3]
-    console.log(arr.includes(2))
-}
-fn();
-
-const key = 'babel'
-const obj = {
-    [key]: 'foo',
-}
-
-Array.from(new Set([1,2,3]))

@@ -1,15 +1,31 @@
 <template>
-    <h1>Hello Vue</h1>
+  <div>
+    <div class='nav'>
+      <router-link to='/home'>首页</router-link>
+      <router-link to='/about'>关于</router-link>
+    </div>
+    <router-view />
+  </div>
 </template>
 
 <script>
+import Home from '@/components/Home.vue'
+
 export default {
-    name: "app"
+  name: "app",
+  data() {
+    return {
+
+    }
+  }
 }
 </script>
 
 <style>
-h1{
-    text-align: center;
+.nav {
+  text-align: center;
+}
+.nav a {
+  margin: 0 12px;
 }
 </style>
