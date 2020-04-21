@@ -1,6 +1,3 @@
-/**
- * 将axio封装好的http方法
- */
 import axios from 'axios'
 import Qs from 'qs'
 
@@ -20,7 +17,9 @@ instance.interceptors.request.use(config => {
    * @param params 例如 { a:['b','c'] }
    * @returns 序列化后的参数
    * arrayFormat: 'indices'      =>    a[1]=b&&a[2]==c
+   * arrayFormat: 'brackets'     =>    a[]=b&&a[]=c
    * arrayFormat: 'repeat'       =>    a=b&&a=c
+   * arrayFormat: 'comma'        =>    a=b,c
    */
   let method = config.method.toUpperCase()
 
@@ -31,28 +30,11 @@ instance.interceptors.request.use(config => {
     }
   } else if(method === 'POST') {
     config.transformRequest = (data) => {
-      if(data && data.file) {
-        config.headers['Content-Type'] = 'multipart/form-data'
-        // 删除file标记属性
-        delete data.file
-        // 将参数转换为formData格式
-        let formData = new FormData()
-        for(let key in data) {
-          if(Array.isArray(data[key])) {
-            for(let item of data[key]) {
-              formData.append(key, item)
-            }
-          } else {
-            formData.append(key, data[key])
-          }
-        }
-        return formData
-      } else {
-        return Qs.stringify(data, { arrayFormat: 'repeat' })
-      }
+      // 如果是有上传文件，需要改一下Content-Type头部，并修改参数格式为FormData形式
+      // config.headers['Content-Type'] = 'multipart/form-data'
+      return Qs.stringify(data, { arrayFormat: 'repeat' })
     }
   }
-
   return config
 }, error => {
   return Promise.reject(error)
@@ -60,28 +42,7 @@ instance.interceptors.request.use(config => {
 
 // 拦截响应，可在then接收数据之前修改响应内容
 instance.interceptors.response.use(response => {
-  let c = response.data.c
-  let m = response.data.m
-  switch (c) {
-    case 0:
-      return response.data.d
-    case 302:
-      location.href = response.data.d
-      return Promise.reject(m)
-    default:
-      return Promise.reject(response.data)
-  }
-})
-
-// 创建一个用来请求easy-mock的axios实例
-const mock = axios.create({
-  baseURL: 'https://easy-mock.com/mock/5b27e843555eff092b541ba4',
-  timeout: 6 * 1000
-})
-
-// mock.interceptors.response.use(response => response.data);
-mock.interceptors.response.use(response => {
-  return response.data.d
+  // 可对状态码判断，在此处理异常情况
 })
 
 /**
@@ -97,38 +58,25 @@ function createPost(url, params) {
   return instance.post(url, params)
 }
 
-Object.defineProperties(Vue.prototype, {
-  $get: {
-    get() {
-      return createGet
-    }
-  },
-
-  $post: {
-    get() {
-      return createPost
-    }
-  },
-
-  $http: {
-    get() {
-      return instance
-    }
-  },
-
-  $axios: {
-    get() {
-      return axios
-    }
-  },
-
-  $mock: {
-    get() {
-      return mock
-    }
+const installer =  {
+  install(Vue) {
+    Object.defineProperties(Vue.prototype, {
+      axios: {
+        get() {
+          return instance
+        }
+      },
+      $http: {
+        get() {
+          return instance
+        }
+      },
+    })
   }
-})
+}
 
-export const $get = createGet
-
-export const $post = createPost
+export {
+  installer as VueAxios,
+  createGet as $get,
+  createPost as $post
+}
