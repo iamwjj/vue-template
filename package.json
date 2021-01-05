@@ -20,7 +20,7 @@
   "dependencies": {
     "@babel/cli": "^7.1.5",
     "@babel/runtime-corejs2": "^7.1.5",
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "tiny-cookie": "^2.1.2",
     "vue": "^2.5.17",
     "vue-router": "^3.0.1",
