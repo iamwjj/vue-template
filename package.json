@@ -35,7 +35,7 @@
     "friendly-errors-webpack-plugin": "^1.7.0",
     "html-webpack-plugin": "^3.2.0",
     "node-notifier": "^5.2.1",
-    "node-sass": "^4.9.4",
+    "node-sass": "^7.0.0",
     "portfinder": "^1.0.17",
     "sass-loader": "^7.1.0",
     "vue-loader": "^15.4.2",
